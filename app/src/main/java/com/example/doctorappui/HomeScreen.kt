@@ -40,15 +40,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.doctorappui.navigation.Route
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     Scaffold(
         topBar = { AppTopBar() },
-        bottomBar = { BottomNavigation() }
+        bottomBar = { BottomNavigation(navController) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -282,7 +283,7 @@ fun DoctorCard(name: String, specialty: String, rating: Float, experience: Strin
 }
 
 @Composable
-fun BottomNavigation() {
+fun BottomNavigation(navController: NavHostController) {
     NavigationBar {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Home, contentDescription = "Home") },
@@ -294,7 +295,9 @@ fun BottomNavigation() {
             icon = { Icon(Icons.Filled.Favorite, contentDescription = "Wishlist") },
             label = { Text("Wishlist") },
             selected = false,
-            onClick = { /* Handle navigation */ }
+            onClick = {
+                navController.navigate(Route.CartScreen.name)
+            }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Settings, contentDescription = "Settings") },
@@ -309,10 +312,4 @@ fun BottomNavigation() {
             onClick = { /* Handle navigation */ }
         )
     }
-}
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
 }

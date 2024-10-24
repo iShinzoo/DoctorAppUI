@@ -18,9 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,7 +25,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,9 +40,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.doctorappui.navigation.Route
 
 data class Doctor(
     val name: String,
@@ -57,12 +54,13 @@ data class Doctor(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen() {
+fun CartScreen(navController: NavHostController) {
     val doctors = listOf(
         Doctor("Dr. Michael Roberts", "Orthopedics", 4.3f, R.drawable.drmichaelroberts),
         Doctor("Dr. David Johnson", "Neurology", 4.3f, R.drawable.drdavidjohnson),
         Doctor("Dr. Jessica Wyne", "Radiology Specialist", 4.3f, R.drawable.drjessicawyne),
-        Doctor("Dr. Richard Lee", "Dentistry", 4.3f, R.drawable.drrichardlee)
+        Doctor("Dr. Richard Lee", "Dentistry", 4.3f, R.drawable.drrichardlee),
+        Doctor("Dr. Sarah Thompson", "Dentistry", 4.3f, R.drawable.drsarahthompson)
     )
 
     Scaffold(
@@ -92,20 +90,23 @@ fun CartScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(doctors) { doctor ->
-                DoctorCard(doctor)
+                DoctorCard(doctor, navController)
             }
         }
     }
 }
 
 @Composable
-fun DoctorCard(doctor: Doctor) {
+fun DoctorCard(doctor: Doctor, navController: NavHostController) {
     var isFavorite by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp),
+            .height(220.dp)
+            .clickable {
+                navController.navigate(Route.DetailsScreen.name)
+            },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -133,11 +134,22 @@ fun DoctorCard(doctor: Doctor) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        Text(
-                            text = "Professional Doctor",
-                            color = Color(0xFF6200EE),
-                            fontSize = 12.sp
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Professional Doctor",
+                                color = Color(0xFF6200EE),
+                                fontSize = 12.sp
+                            )
+                            Spacer(modifier = Modifier.width(2.dp))
+                            Image(
+                                painter = painterResource(id = R.drawable.tick),
+                                contentDescription = "experience",
+                                modifier = Modifier.size(12.dp)
+                            )
+                        }
                         Text(
                             text = doctor.name,
                             fontWeight = FontWeight.Bold,
@@ -187,10 +199,4 @@ fun DoctorCard(doctor: Doctor) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DoctorCardPreview() {
-    CartScreen()
 }

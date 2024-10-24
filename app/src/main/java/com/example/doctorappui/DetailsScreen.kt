@@ -23,9 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 @Composable
-fun DetailsScreen() {
+fun DetailsScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -163,10 +164,4 @@ fun ActionButton(icon: Painter, label: String) {
         )
         Text(label, fontSize = 12.sp)
     }
-}
-
-@Preview
-@Composable
-fun DetailsScreenPreview() {
-    DetailsScreen()
 }

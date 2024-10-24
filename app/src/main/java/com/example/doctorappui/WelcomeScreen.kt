@@ -22,9 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.doctorappui.navigation.Route
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +66,7 @@ fun WelcomeScreen() {
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = {
-
+                        navController.navigate(Route.HomeScreen.name)
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6429A8)),
                     shape = RoundedCornerShape(8.dp),
@@ -90,10 +92,4 @@ fun WelcomeScreen() {
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun WelcomeScreenPreview() {
-    WelcomeScreen()
 }
